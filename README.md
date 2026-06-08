@@ -13,4 +13,5 @@
 - Python
 - Django
 - Bootstrap
-- 
+
+Проект выполнен в рамках домашнего задания по Django.
