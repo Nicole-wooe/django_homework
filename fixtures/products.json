@@ -1,0 +1,28 @@
+[
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Ноутбук",
+      "description": "Игровой ноутбук",
+      "image": "",
+      "category": 1,
+      "price": "120000.00",
+      "created_at": "2026-06-10T19:00:00Z",
+      "updated_at": "2026-06-10T19:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Python для начинающих",
+      "description": "Учебник по Python",
+      "image": "",
+      "category": 2,
+      "price": "1500.00",
+      "created_at": "2026-06-10T19:00:00Z",
+      "updated_at": "2026-06-10T19:00:00Z"
+    }
+  }
+]
