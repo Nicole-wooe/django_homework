@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная
+{% endblock %}
+
+{% block content %}
+
+<h1>Главная страница</h1>
+
+{% for product in products %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5>{{ product.name }}</h5>
+
+        <p>
+            {{ product.description|truncatechars:100 }}
+        </p>
+
+        <p>
+            Цена: {{ product.price }}
+        </p>
+
+        <a href="/products/{{ product.pk }}/"
+           class="btn btn-success">
+            Подробнее
+        </a>
+    </div>
+</div>
+{% endfor %}
+
+<a href="/contacts/" class="btn btn-primary mt-3">
+    Контакты
+</a>
+
+{% endblock %}
