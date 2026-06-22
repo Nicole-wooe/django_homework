@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Блог
+{% endblock %}
+
+{% block content %}
+<h1>Блог</h1>
+
+<a href="{% url 'blog:create' %}">Создать статью</a>
+
+{% for object in object_list %}
+    <h2>{{ object.title }}</h2>
+    <p>{{ object.content|truncatechars:100 }}</p>
+    <a href="{% url 'blog:detail' object.pk %}">Читать</a>
+{% empty %}
+    <p>Статей пока нет.</p>
+{% endfor %}
+{% endblock %}
