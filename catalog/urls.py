@@ -1,9 +1,8 @@
 from django.urls import path
 
-from catalog.apps import CatalogConfig
-from catalog.views import HomeView, ContactsView
+from catalog.views import ContactsView, HomeView
 
-app_name = CatalogConfig.name
+app_name = "catalog"
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
