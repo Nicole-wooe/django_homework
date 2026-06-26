@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Форма продукта
+{% endblock %}
+
+{% block content %}
+<h1>Форма продукта</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Сохранить</button>
+</form>
+
+<a href="{% url 'catalog:product_list' %}">Назад к продуктам</a>
+{% endblock %}
