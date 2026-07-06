@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ object.name }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ object.name }}</h1>
+
+{% if object.image %}
+    <img src="{{ object.image.url }}" alt="{{ object.name }}" width="300">
+{% endif %}
+
+<p>{{ object.description }}</p>
+<p><strong>Категория:</strong> {{ object.category }}</p>
+<p><strong>Цена:</strong> {{ object.price }}</p>
+
+<a href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+<a href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
+<a href="{% url 'catalog:product_list' %}">Назад к продуктам</a>
+{% endblock %}

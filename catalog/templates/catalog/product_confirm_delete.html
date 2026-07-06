@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Удаление продукта
+{% endblock %}
+
+{% block content %}
+<h1>Удаление продукта</h1>
+
+<p>Вы действительно хотите удалить продукт "{{ object.name }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit">Удалить</button>
+</form>
+
+<a href="{% url 'catalog:product_detail' object.pk %}">Отмена</a>
+{% endblock %}
