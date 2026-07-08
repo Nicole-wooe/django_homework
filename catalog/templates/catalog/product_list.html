@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Продукты
+{% endblock %}
+
+{% block content %}
+<h1>Продукты</h1>
+
+<a href="{% url 'catalog:product_create' %}">Создать продукт</a>
+
+{% for object in object_list %}
+    <hr>
+    <h2>{{ object.name }}</h2>
+
+    {% if object.image %}
+        <img src="{{ object.image.url }}" alt="{{ object.name }}" width="200">
+    {% endif %}
+
+    <p>{{ object.description|truncatechars:100 }}</p>
+    <p><strong>Цена:</strong> {{ object.price }}</p>
+
+    <a href="{% url 'catalog:product_detail' object.pk %}">Подробнее</a>
+{% empty %}
+    <p>Продуктов пока нет.</p>
+{% endfor %}
+
+{% endblock %}
