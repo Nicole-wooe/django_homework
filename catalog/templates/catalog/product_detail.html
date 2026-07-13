@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}
 {{ product.name }}
@@ -12,7 +12,7 @@
     <img src="{{ product.image.url }}"
          alt="{{ product.name }}"
          class="img-fluid mb-3"
-         style="max-width: 400px;">
+         width="400">
 {% endif %}
 
 <p>{{ product.description }}</p>
@@ -21,8 +21,43 @@
     <strong>Цена:</strong> {{ product.price }}
 </p>
 
-<a href="/" class="btn btn-primary">
-    На главную
+<p>
+    <strong>Категория:</strong> {{ product.category }}
+</p>
+
+<p>
+    <strong>Статус:</strong>
+
+    {% if product.is_published %}
+        Опубликован
+    {% else %}
+        Не опубликован
+    {% endif %}
+</p>
+
+{% if product.owner %}
+    <p>
+        <strong>Владелец:</strong> {{ product.owner }}
+    </p>
+{% endif %}
+
+{% if user == product.owner or perms.catalog.can_unpublish_product %}
+    <a href="{% url 'catalog:product_update' product.pk %}"
+       class="btn btn-warning">
+        Редактировать
+    </a>
+{% endif %}
+
+{% if user == product.owner or perms.catalog.delete_product %}
+    <a href="{% url 'catalog:product_delete' product.pk %}"
+       class="btn btn-danger">
+        Удалить
+    </a>
+{% endif %}
+
+<a href="{% url 'catalog:product_list' %}"
+   class="btn btn-primary">
+    Назад к продуктам
 </a>
 
 {% endblock %}

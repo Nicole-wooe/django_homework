@@ -1,4 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+)
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -9,7 +13,7 @@ from django.views.generic import (
     UpdateView,
 )
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ProductModeratorForm
 from catalog.models import Product
 
 
@@ -37,15 +41,66 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+
+class ProductUpdateView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    UpdateView,
+):
     model = Product
-    form_class = ProductForm
     template_name = "catalog/product_form.html"
     success_url = reverse_lazy("catalog:product_list")
 
+    def test_func(self):
+        product = self.get_object()
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+        is_owner = product.owner == self.request.user
+        is_moderator = self.request.user.has_perm(
+            "catalog.can_unpublish_product"
+        )
+
+        return is_owner or is_moderator
+
+    def get_form_class(self):
+        product = self.get_object()
+
+        if product.owner == self.request.user:
+            return ProductForm
+
+        return ProductModeratorForm
+
+    def handle_no_permission(self):
+        raise PermissionDenied(
+            "Редактировать продукт может только его владелец "
+            "или модератор."
+        )
+
+
+class ProductDeleteView(
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
+):
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     success_url = reverse_lazy("catalog:product_list")
+
+    def test_func(self):
+        product = self.get_object()
+
+        is_owner = product.owner == self.request.user
+        is_moderator = self.request.user.has_perm(
+            "catalog.delete_product"
+        )
+
+        return is_owner or is_moderator
+
+    def handle_no_permission(self):
+        raise PermissionDenied(
+            "Удалять продукт может только его владелец "
+            "или модератор."
+        )

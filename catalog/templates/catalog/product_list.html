@@ -5,22 +5,50 @@
 {% endblock %}
 
 {% block content %}
+
 <h1>Продукты</h1>
 
-<a href="{% url 'catalog:product_create' %}">Создать продукт</a>
+{% if user.is_authenticated %}
+    <a href="{% url 'catalog:product_create' %}"
+       class="btn btn-success mb-3">
+        Создать продукт
+    </a>
+{% endif %}
 
 {% for object in object_list %}
     <hr>
+
     <h2>{{ object.name }}</h2>
 
     {% if object.image %}
-        <img src="{{ object.image.url }}" alt="{{ object.name }}" width="200">
+        <img src="{{ object.image.url }}"
+             alt="{{ object.name }}"
+             width="200">
     {% endif %}
 
-    <p>{{ object.description|truncatechars:100 }}</p>
-    <p><strong>Цена:</strong> {{ object.price }}</p>
+    <p>
+        {{ object.description|truncatechars:100 }}
+    </p>
 
-    <a href="{% url 'catalog:product_detail' object.pk %}">Подробнее</a>
+    <p>
+        <strong>Цена:</strong> {{ object.price }}
+    </p>
+
+    <p>
+        <strong>Статус:</strong>
+
+        {% if object.is_published %}
+            Опубликован
+        {% else %}
+            Не опубликован
+        {% endif %}
+    </p>
+
+    <a href="{% url 'catalog:product_detail' object.pk %}"
+       class="btn btn-primary">
+        Подробнее
+    </a>
+
 {% empty %}
     <p>Продуктов пока нет.</p>
 {% endfor %}

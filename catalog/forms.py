@@ -30,7 +30,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for field_name, field in self.fields.items():
+        for field in self.fields.values():
             if isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs.update({"class": "form-check-input"})
             else:
@@ -68,3 +68,8 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError(
                     f"Нельзя использовать запрещённое слово: {word}."
                 )
+
+
+class ProductModeratorForm(ProductForm):
+    class Meta(ProductForm.Meta):
+        fields = ProductForm.Meta.fields + ("is_published",)

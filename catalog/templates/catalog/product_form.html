@@ -1,19 +1,36 @@
 {% extends "base.html" %}
 
 {% block title %}
-Форма продукта
+{% if object %}
+Редактирование продукта
+{% else %}
+Создание продукта
+{% endif %}
 {% endblock %}
 
 {% block content %}
-<h1>Форма продукта</h1>
+
+{% if object %}
+    <h1>Редактирование продукта</h1>
+{% else %}
+    <h1>Создание продукта</h1>
+{% endif %}
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     {{ form.as_p }}
 
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="btn btn-success">
+        Сохранить
+    </button>
 </form>
 
-<a href="{% url 'catalog:product_list' %}">Назад к продуктам</a>
+<br>
+
+<a href="{% url 'catalog:product_list' %}"
+   class="btn btn-secondary">
+    Назад к продуктам
+</a>
+
 {% endblock %}
