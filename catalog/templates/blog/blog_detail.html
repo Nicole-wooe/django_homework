@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ object.title }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ object.title }}</h1>
+
+{% if object.preview %}
+    <img src="{{ object.preview.url }}" alt="{{ object.title }}" width="300">
+{% endif %}
+
+<p>{{ object.content }}</p>
+
+<p>Дата создания: {{ object.created_at }}</p>
+<p>Просмотры: {{ object.views_count }}</p>
+
+<a href="{% url 'blog:update' object.pk %}">Редактировать</a>
+<a href="{% url 'blog:delete' object.pk %}">Удалить</a>
+<a href="{% url 'blog:list' %}">Назад к списку</a>
+{% endblock %}
