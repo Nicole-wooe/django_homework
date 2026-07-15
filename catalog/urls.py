@@ -7,18 +7,53 @@ from catalog.views import (
     ProductDeleteView,
     ProductDetailView,
     ProductListView,
+    ProductsByCategoryView,
     ProductUpdateView,
 )
 
+
 app_name = "catalog"
 
-urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
-    path("contacts/", ContactsView.as_view(), name="contacts"),
-    path("products/", ProductListView.as_view(), name="product_list"),
-    path("products/create/", ProductCreateView.as_view(), name="product_create"),
-    path("products/<int:pk>/", ProductDetailView.as_view(), name="product_detail"),
-    path("products/<int:pk>/update/", ProductUpdateView.as_view(), name="product_update"),
-    path("products/<int:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
-]
 
+urlpatterns = [
+    path(
+        "",
+        HomeView.as_view(),
+        name="home",
+    ),
+    path(
+        "contacts/",
+        ContactsView.as_view(),
+        name="contacts",
+    ),
+    path(
+        "products/",
+        ProductListView.as_view(),
+        name="product_list",
+    ),
+    path(
+        "products/create/",
+        ProductCreateView.as_view(),
+        name="product_create",
+    ),
+    path(
+        "products/<int:pk>/",
+        ProductDetailView.as_view(),
+        name="product_detail",
+    ),
+    path(
+        "products/<int:pk>/update/",
+        ProductUpdateView.as_view(),
+        name="product_update",
+    ),
+    path(
+        "products/<int:pk>/delete/",
+        ProductDeleteView.as_view(),
+        name="product_delete",
+    ),
+    path(
+        "categories/<int:category_id>/products/",
+        ProductsByCategoryView.as_view(),
+        name="products_by_category",
+    ),
+]

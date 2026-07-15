@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Продукты категории {{ category.name }}
+{% endblock %}
+
+{% block content %}
+
+<h1>Продукты категории «{{ category.name }}»</h1>
+
+{% for product in products %}
+    <hr>
+
+    <h2>{{ product.name }}</h2>
+
+    {% if product.image %}
+        <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            width="200"
+        >
+    {% endif %}
+
+    <p>
+        {{ product.description|truncatechars:100 }}
+    </p>
+
+    <p>
+        <strong>Цена:</strong> {{ product.price }}
+    </p>
+
+    <a href="{% url 'catalog:product_detail' product.pk %}">
+        Подробнее
+    </a>
+
+{% empty %}
+    <p>В этой категории пока нет продуктов.</p>
+{% endfor %}
+
+<br><br>
+
+<a href="{% url 'catalog:product_list' %}">
+    Назад к продуктам
+</a>
+
+{% endblock %}

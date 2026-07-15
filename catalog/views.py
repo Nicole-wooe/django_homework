@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin,
 )
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -16,7 +17,8 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Category, Product
+from catalog.services import get_products_by_category
 
 
 class HomeView(TemplateView):
@@ -36,6 +38,28 @@ class ProductListView(ListView):
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
+
+
+class ProductsByCategoryView(ListView):
+    model = Product
+    template_name = "catalog/products_by_category.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        category_id = self.kwargs["category_id"]
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        category_id = self.kwargs["category_id"]
+
+        context["category"] = get_object_or_404(
+            Category,
+            pk=category_id,
+        )
+
+        return context
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
